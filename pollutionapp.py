@@ -81,6 +81,11 @@ def InitRenderText():# 스크롤
     RenderText.place(x=150, y=180)
     RenderTextScrollbar.config(command=RenderText.yview)
     RenderTextScrollbar.pack(side=RIGHT,fill=BOTH)
+    RenderText.insert(INSERT, "    미세먼지 농도 상태    \n\n\n")
+    RenderText.insert(INSERT, "좋음   0   ~  30\n\n\n")
+    RenderText.insert(INSERT, "보통   31   ~  80\n\n\n")
+    RenderText.insert(INSERT, "나쁨   81   ~  150\n\n\n")
+    RenderText.insert(INSERT, "매우나쁨   151   ~    \n\n\n")
     RenderText.configure(state='disabled')
 
 
@@ -174,13 +179,76 @@ def clickInitRenderText4(temp_tk):
 
 #클릭 함수
 def click_InitSearchButton1():
+    import datetime
+    from xml.dom.minidom import parse, parseString
+
+
     c_tk = Tk()
     c_tk.geometry("400x600")
     clickTopText(c_tk)
-    clicksecondText(c_tk)
-    InitInputLable(c_tk)
-    clickSearchButton(c_tk)
-    clickInitRenderText(c_tk)
+
+    index = 0
+    i = 0
+    now= datetime.datetime.now()
+    nal=str(now.year).zfill(4) + "-" + str(now.month).zfill(2) + "-" + str(now.day).zfill(2)
+
+    key= "LNkyelRj0H1r988h%2FcAj5495bZL4p1wiIv6DU1uI0kCio%2FzjzSm5iPVZs6kxxICTXI6H4%2Bnr3o2lq%2BIF5wxgpw%3D%3D"
+    url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMinuDustFrcstDspth?searchDate=" + nal + "&ServiceKey=" + key
+
+    data = urllib.request.urlopen(url).read()
+    f = open("city yebo.xml","wb")
+    f.write(data)
+    f.close()
+
+    doc = parse("city yebo.xml")
+    item = doc.getElementsByTagName("item")
+    informOverall = doc.getElementsByTagName("informOverall")
+    informGrade = doc.getElementsByTagName("informGrade")
+    dataTime = doc.getElementsByTagName("dataTime")
+
+    Overall = []
+    Grade = []
+    data= []
+
+    temp1 = str(dataTime[index].firstChild.data)
+    temp2 = str(informOverall[index].firstChild.data)
+    temp3 = str(informGrade[index].firstChild.data)
+
+    data.append(temp1)
+    Overall.append(temp2)
+    Grade.append(temp3)
+
+    def InitRenderText():
+        global RenderText
+        global  c1
+        RenderTextScrollbar = Scrollbar(c_tk)
+        RenderTextScrollbar.pack()
+        RenderTextScrollbar.place(x=375, y=200)
+
+        TempFont = font.Font(c_tk, size=10, family='Consolas')
+        RenderText = Text(c_tk, width=49, height=30, borderwidth=12, relief='ridge',
+                          yscrollcommand=RenderTextScrollbar.set)
+        RenderText.pack()
+        RenderText.place(x=10, y=157)
+        RenderTextScrollbar.config(command=RenderText.yview)
+        RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
+        RenderText.insert(INSERT, "                 도시별  조회  기록\n\n")
+        RenderText.insert(INSERT, "\t\t[")
+        RenderText.insert(INSERT, temp1)
+        RenderText.insert(INSERT, "] \t")
+        RenderText.insert(INSERT, "\n\n")
+        RenderText.insert(INSERT, temp2)
+        RenderText.insert(INSERT, "\n\n\n\n")
+        RenderText.insert(INSERT, temp3)
+        RenderText.insert(INSERT, "\n")
+        c1 = RenderText.get('0.0', END)
+        RenderText.configure(state='disabled')
+
+    InitRenderText()
+    #clicksecondText(c_tk)
+    # InitInputLable(c_tk)
+    # clickSearchButton(c_tk)
+    # clickInitRenderText(c_tk)
 
 
 def click_InitSearchButton2():
