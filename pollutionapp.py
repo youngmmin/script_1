@@ -7,23 +7,20 @@ import tkinter.messagebox
 import smtplib
 from email.mime.text import MIMEText
 
-
 g_Tk = Tk()
 g_Tk.geometry("400x600+500+130")
 g_Tk.title("미세먼지 및 대기오염 정보조회")
 DataList = []
-#사진
+# 사진
 
 photo = PhotoImage(file="미세먼지.png")
-imageLabel = Label(g_Tk, image = photo)
+imageLabel = Label(g_Tk, image=photo)
 imageLabel.pack()
 
 
-
-#메인부분
+# 메인부분
 def m_yebo():
     InitTopText()
-    mail_button()
     InitSearchButton1()
     InitSearchButton2()
     InitSearchButton3()
@@ -31,23 +28,25 @@ def m_yebo():
     InitRenderText()
 
 
-#first page
+# first page
 
 def InitTopText():
     TempFont = font.Font(g_Tk, size=20, weight='bold', family='Consolas')
-    MainText = Label(g_Tk, font=TempFont,bg ="blue",fg = "white", text="미세먼지 예보 App")
+    MainText = Label(g_Tk, font=TempFont, bg="blue", fg="white", text="미세먼지 예보 App")
     MainText.pack()
-    MainText.place(x=70, y = 20)
+    MainText.place(x=70, y=20)
 
-def InitSearchButton1():#측정소별 실시간 조회
-    TempFont = font.Font(g_Tk, size=10, weight='bold', family = 'Consolas')
+
+def InitSearchButton1():  # 측정소별 실시간 조회
+    TempFont = font.Font(g_Tk, size=10, weight='bold', family='Consolas')
     SearchButton = Button(g_Tk, font=TempFont, text="도시 별 \n　 실시간 조회 　　", command=click_InitSearchButton1)
     SearchButton.pack()
-    SearchButton.place(x=10,y=180)
+    SearchButton.place(x=10, y=180)
 
-def InitSearchButton2():#시도 별 측정소 위치 조회
-    TempFont = font.Font(g_Tk, size=10, weight='bold', family = 'Consolas')
-    SearchButton = Button(g_Tk, font=TempFont, text=" 시도 별 측정소 \n  위치 조회   ", command=click_InitSearchButton2)
+
+def InitSearchButton2():  # 시도 별 측정소 위치 조회
+    TempFont = font.Font(g_Tk, size=10, weight='bold', family='Consolas')
+    SearchButton = Button(g_Tk, font=TempFont, text=" 실시간 측정소별 \n  조회   ", command=click_InitSearchButton2)
     SearchButton.pack()
     SearchButton.place(x=10, y=270)
 
@@ -56,31 +55,34 @@ def InitSearchButton3():  # 전국 미세먼지 평균 수치
     TempFont = font.Font(g_Tk, size=10, weight='bold', family='Consolas')
     SearchButton = Button(g_Tk, font=TempFont, text=" 주간 미세먼지\n 평균 수치 조회", command=click_InitSearchButton3)
     SearchButton.pack()
-    SearchButton.place(x=10,y=360)
+    SearchButton.place(x=10, y=360)
+
 
 def InitSearchButton4():  # 통합 대기 환경지수 나쁨 이상 조회
     TempFont = font.Font(g_Tk, size=10, weight='bold', family='Consolas')
     SearchButton = Button(g_Tk, font=TempFont, text="전국 대기오염지수\n나쁨 이상 조회", command=click_InitSearchButton4)
     SearchButton.pack()
-    SearchButton.place(x=10,y=450)
+    SearchButton.place(x=10, y=450)
 
-def mail_button():#메일버튼
-    TempFont = font.Font(g_Tk, size=8, weight='bold', family = 'Consolas')
-    SearchButton = Button(g_Tk,font = TempFont, text=" 메일보내기 ",  command='mailmain')
+
+def mail_button(c_tk):  # 메일버튼
+    TempFont = font.Font(c_tk, size=8, weight='bold', family='Consolas')
+    SearchButton = Button(c_tk, font=TempFont, text=" 메일보내기 ", command=click_mailmain)
     SearchButton.pack()
-    SearchButton.place(x=305,y=550)
+    SearchButton.place(x=305, y=575)
 
-def InitRenderText():# 스크롤
+
+def InitRenderText():  # 스크롤
     global RenderText
     RenderTextScrollbar = Scrollbar(g_Tk)
     RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375,y=200)
-    TempFont = font.Font(g_Tk, size=10,family='Consolas')
+    RenderTextScrollbar.place(x=375, y=200)
+    TempFont = font.Font(g_Tk, size=10, family='Consolas')
     RenderText = Text(g_Tk, width=30, height=22, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
     RenderText.pack()
     RenderText.place(x=150, y=180)
     RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT,fill=BOTH)
+    RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
     RenderText.insert(INSERT, "    미세먼지 농도 상태    \n\n\n")
     RenderText.insert(INSERT, "좋음   0   ~  30\n\n\n")
     RenderText.insert(INSERT, "보통   31   ~  80\n\n\n")
@@ -89,99 +91,75 @@ def InitRenderText():# 스크롤
     RenderText.configure(state='disabled')
 
 
-
-
-
-
-
-
-
-
-#click 버튼
+# click 버튼
 def clickTopText(temp_tk):
     TempFont = font.Font(temp_tk, size=20, weight='bold', family='Consolas')
-    MainText = Label(temp_tk, font=TempFont,bg ="blue",fg = "white", text="도시별 실시간 조회")
+    MainText = Label(temp_tk, font=TempFont, bg="blue", fg="white", text="도시별 실시간 조회")
     MainText.pack()
-    MainText.place(x=70,y=50)
+    MainText.place(x=70, y=50)
+
+
 def clickTopText2(temp_tk):
     TempFont = font.Font(temp_tk, size=20, weight='bold', family='Consolas')
-    MainText = Label(temp_tk, font=TempFont,bg ="blue",fg = "white", text="시도 별 측정소 위치 조회")
+    MainText = Label(temp_tk, font=TempFont, bg="blue", fg="white", text="실시간 측정소별 조회")
     MainText.pack()
-    MainText.place(x=40,y=50)
+    MainText.place(x=40, y=50)
+
+
 def clickTopText3(temp_tk):
     TempFont = font.Font(temp_tk, size=20, weight='bold', family='Consolas')
-    MainText = Label(temp_tk, font=TempFont,bg ="blue",fg = "white", text="전국 미세먼지 평균 수치")
+    MainText = Label(temp_tk, font=TempFont, bg="blue", fg="white", text="전국 미세먼지 평균 수치")
     MainText.pack()
-    MainText.place(x=40,y=50)
+    MainText.place(x=40, y=50)
+
+
 def clickTopText4(temp_tk):
     TempFont = font.Font(temp_tk, size=20, weight='bold', family='Consolas')
-    MainText = Label(temp_tk, font=TempFont,bg ="blue",fg = "white", text="전국 대기오염지수\n나쁨 이상 조회")
+    MainText = Label(temp_tk, font=TempFont, bg="blue", fg="white", text="전국 대기오염지수\n나쁨 이상 조회")
     MainText.pack()
-    MainText.place(x=70,y=50)
+    MainText.place(x=70, y=50)
+
 
 def InitInputLable(temp_tk):
-        global InputLabel
-        TempFont = font.Font(temp_tk, size=15, weight='bold', family='Consolas')
-        InputLabel = Entry(temp_tk, font=TempFont,bg ="blue",fg = "white", width=26, borderwidth=12, relief='ridge')
-        InputLabel.pack()
-        InputLabel.place(x=10, y=130)
+    global InputLabel
+    TempFont = font.Font(temp_tk, size=15, weight='bold', family='Consolas')
+    InputLabel = Entry(temp_tk, font=TempFont, bg="blue", fg="white", width=26, borderwidth=12, relief='ridge')
+    InputLabel.pack()
+    InputLabel.place(x=10, y=130)
+
 
 def clicksecondText(temp_tk):
     TempFont = font.Font(temp_tk, size=10, weight='bold', family='Consolas')
-    MainText = Label(temp_tk, font=TempFont, text="ex) 내손동, 동안구.....")
+    MainText = Label(temp_tk, font=TempFont, text="ex) 강남구, 정왕동.....")
     MainText.pack()
     MainText.place(x=220, y=100)
-def clickSearchButton(temp_tk):
+
+
+def clickSearchButton(temp_tk ,SearchButtonAction):
     TempFont = font.Font(temp_tk, size=12, weight='bold', family='Consolas')
-    SearchButton = Button(temp_tk, font=TempFont, text="검색", command='SearchButtonAction')
+    SearchButton = Button(temp_tk, font=TempFont, text="검색", command= SearchButtonAction )
     SearchButton.pack()
     SearchButton.place(x=330, y=140)
+
+
 def clickInitRenderText(temp_tk):
     global RenderText
     RenderTextScrollbar = Scrollbar(temp_tk)
     RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375,y=200)
-    TempFont = font.Font(temp_tk, size=10,family='Consolas')
-    RenderText = Text(temp_tk, width=49, height=22, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
+    RenderTextScrollbar.place(x=375, y=200)
+    TempFont = font.Font(temp_tk, size=10, family='Consolas')
+    RenderText = Text(temp_tk, width=49, height=22, borderwidth=12, relief='ridge',
+                      yscrollcommand=RenderTextScrollbar.set)
     RenderText.pack()
     RenderText.place(x=10, y=220)
     RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT,fill=BOTH)
-    RenderText.configure(state='disabled')
-def clickInitRenderText3(temp_tk):
-    global RenderText
-    RenderTextScrollbar = Scrollbar(temp_tk)
-    RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375,y=200)
-    TempFont = font.Font(temp_tk, size=10,family='Consolas')
-    RenderText = Text(temp_tk, width=49, height=30, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
-    RenderText.pack()
-    RenderText.place(x=10, y=170)
-    RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT,fill=BOTH)
-    RenderText.configure(state='disabled')
-
-def clickInitRenderText4(temp_tk):
-    global RenderText
-
-    RenderTextScrollbar = Scrollbar(temp_tk)
-    RenderTextScrollbar.pack()
-    RenderTextScrollbar.place(x=375,y=200)
-    TempFont = font.Font(temp_tk, size=10,family='Consolas')
-    RenderText = Text(temp_tk, width=49, height=30, borderwidth=12, relief='ridge', yscrollcommand=RenderTextScrollbar.set)
-    RenderText.pack()
-    RenderText.place(x=10, y=170)
-    RenderTextScrollbar.config(command=RenderText.yview)
-    RenderTextScrollbar.pack(side=RIGHT,fill=BOTH)
+    RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
     RenderText.configure(state='disabled')
 
 
-
-#클릭 함수
+# 클릭 함수
 def click_InitSearchButton1():
     import datetime
-    from xml.dom.minidom import parse, parseString
-
 
     c_tk = Tk()
     c_tk.geometry("400x600")
@@ -189,14 +167,14 @@ def click_InitSearchButton1():
 
     index = 0
     i = 0
-    now= datetime.datetime.now()
-    nal=str(now.year).zfill(4) + "-" + str(now.month).zfill(2) + "-" + str(now.day).zfill(2)
+    now = datetime.datetime.now()
+    nal = str(now.year).zfill(4) + "-" + str(now.month).zfill(2) + "-" + str(now.day).zfill(2)
 
-    key= "LNkyelRj0H1r988h%2FcAj5495bZL4p1wiIv6DU1uI0kCio%2FzjzSm5iPVZs6kxxICTXI6H4%2Bnr3o2lq%2BIF5wxgpw%3D%3D"
+    key = "LNkyelRj0H1r988h%2FcAj5495bZL4p1wiIv6DU1uI0kCio%2FzjzSm5iPVZs6kxxICTXI6H4%2Bnr3o2lq%2BIF5wxgpw%3D%3D"
     url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMinuDustFrcstDspth?searchDate=" + nal + "&ServiceKey=" + key
 
     data = urllib.request.urlopen(url).read()
-    f = open("city yebo.xml","wb")
+    f = open("city yebo.xml", "wb")
     f.write(data)
     f.close()
 
@@ -208,7 +186,7 @@ def click_InitSearchButton1():
 
     Overall = []
     Grade = []
-    data= []
+    data = []
 
     temp1 = str(dataTime[index].firstChild.data)
     temp2 = str(informOverall[index].firstChild.data)
@@ -220,7 +198,7 @@ def click_InitSearchButton1():
 
     def InitRenderText():
         global RenderText
-        global  c1
+
         RenderTextScrollbar = Scrollbar(c_tk)
         RenderTextScrollbar.pack()
         RenderTextScrollbar.place(x=375, y=200)
@@ -241,30 +219,175 @@ def click_InitSearchButton1():
         RenderText.insert(INSERT, "\n\n\n\n")
         RenderText.insert(INSERT, temp3)
         RenderText.insert(INSERT, "\n")
-        c1 = RenderText.get('0.0', END)
+        b1 = RenderText.get('0.0', END)
         RenderText.configure(state='disabled')
 
     InitRenderText()
-    #clicksecondText(c_tk)
-    # InitInputLable(c_tk)
-    # clickSearchButton(c_tk)
-    # clickInitRenderText(c_tk)
+
+
+
 
 
 def click_InitSearchButton2():
+
     c_tk = Tk()
     c_tk.geometry("400x600")
+
+    def SearchButtonAction():
+        global Dong
+        global InputLabel
+        RenderText.configure(state='normal')
+        RenderText.delete(0.0, END)
+        Dong = InputLabel.get()
+        key ="LNkyelRj0H1r988h%2FcAj5495bZL4p1wiIv6DU1uI0kCio%2FzjzSm5iPVZs6kxxICTXI6H4%2Bnr3o2lq%2BIF5wxgpw%3D%3D"
+        url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMsrstnAcctoRltmMesureDnsty?stationName=" + urllib.parse.quote(Dong) + "&dataTerm=month&pageNo=1&numOfRows=10&ServiceKey=" + key + "&ver=1.3"
+
+        data = urllib.request.urlopen(url).read()
+        f = open("city.xml", "wb")
+        f.write(data)
+        f.close()
+        doc = parse("city.xml")
+        item = doc.getElementsByTagName("item")
+        dataTime = doc.getElementsByTagName("dataTime")
+        mangName = doc.getElementsByTagName("mangName")
+        so2Value = doc.getElementsByTagName("so2Value")
+        coValue = doc.getElementsByTagName("coValue")
+        o3Value = doc.getElementsByTagName("o3Value")
+        no2Value = doc.getElementsByTagName("no2Value")
+        pm10Value = doc.getElementsByTagName("pm10Value")
+        pm10Value24 = doc.getElementsByTagName("pm10Value24")
+        pm25Value = doc.getElementsByTagName("pm25Value")
+        pm25Value24 = doc.getElementsByTagName("pm25Value24")
+        khaiValue = doc.getElementsByTagName("khaiValue")
+        # khaiGrade = doc.getElementsByTagName("khaiGrade")
+        so2Grade = doc.getElementsByTagName("so2Grade")
+        coGrade = doc.getElementsByTagName("coGrade")
+        o3Grade = doc.getElementsByTagName("o3Grade")
+        no2Grade = doc.getElementsByTagName("no2Grade")
+        pm10Grade = doc.getElementsByTagName("pm10Grade")
+        # pm25Grade = doc.getElementsByTagName("pm25Grade")
+        pm10Grade1h = doc.getElementsByTagName("pm10Grade1h")
+        # pm25Grade1h = doc.getElementsByTagName("pm25Grade1h")
+
+        mangnum = mangName.length
+        if mangnum == 0:
+            tkinter.messagebox.showwarning("Information", "Information update please")
+
+        else:
+            dataInfo = []
+            mangInfo = []
+            so2Info = []
+            coInfo = []
+            o3Info = []
+            no2Info = []
+            pm10Info = []
+            pm10Info24 =[]
+            pm25Info = []
+            pm25Info24 = []
+            khaiInfo = []
+            # khaiGradeInfo = []
+            so2GradeInfo = []
+            coGradeInfo = []
+            o3GradeInfo = []
+            no2GradeInfo = []
+            pm10GradeInfo = []
+            pm25GradeInfo = []
+            pm10Grade1hInfo = []
+            pm25Grade1hInfo = []
+            index = 0
+
+            while index < mangnum:
+                temp1 = str(dataTime[index].firstChild.data)
+                temp2 = str(mangName[index].firstChild.data)
+                temp3 = str(so2Value[index].firstChild.data)
+                temp4 = str(o3Value[index].firstChild.data)
+                temp5 = str(no2Value[index].firstChild.data)
+                temp6 = str(pm10Value[index].firstChild.data)
+                temp7 = str(pm10Value24[index].firstChild.data)
+                temp8 = str(pm25Value [index].firstChild.data)
+                temp9 = str(pm25Value24[index].firstChild.data)
+                temp10 = str(khaiValue[index].firstChild.data)
+                # temp11 = str(khaiGrade[index].firstChild.data)
+                temp12 = str(so2Grade[index].firstChild.data)
+                temp13 = str(coGrade[index].firstChild.data)
+                temp14 = str(o3Grade[index].firstChild.data)
+                temp15 = str(no2Grade[index].firstChild.data)
+                temp16 = str(pm10Grade[index].firstChild.data)
+                # temp17 = str(pm25Grade[index].firstChild.data)
+                temp18 = str(pm10Grade1h[index].firstChild.data)
+                # temp19 = str(pm25Grade1h[index].firstChild.data)
+                temp20 = str(coValue[index].firstChild.data)
+
+                dataInfo.append(temp1)
+                mangInfo.append(temp2)
+                so2Info.append(temp3)
+                o3Info.append(temp4)
+                no2Info.append(temp5)
+                pm10Info.append(temp6)
+                pm10Info24.append(temp7)
+                pm25Info.append(temp8)
+                pm25Info24.append(temp9)
+                khaiInfo.append(temp10)
+                # khaiGradeInfo.append(temp11)
+                so2GradeInfo.append(temp12)
+                coGradeInfo.append(temp13)
+                o3GradeInfo.append(temp14)
+                no2GradeInfo.append(temp15)
+                pm10GradeInfo.append(temp16)
+                # pm25GradeInfo.append(temp17)
+                pm10Grade1hInfo.append(temp18)
+                # pm25Grade1hInfo.append(temp19)
+                coInfo.append(temp20)
+                index += 1
+        for i in range(mangnum):
+            RenderText.insert(INSERT, "\n")
+            RenderText.insert(INSERT, "측정 일시 : ")
+            RenderText.insert(INSERT, dataInfo[i])
+            RenderText.insert(INSERT, "\n측정 망 정보 : ")
+            RenderText.insert(INSERT, mangInfo[i])
+            RenderText.insert(INSERT, "\n아황산가스 농도 : ")
+            RenderText.insert(INSERT, so2Info[i])
+            RenderText.insert(INSERT, "\n일산화탄소 농도 : ")
+            RenderText.insert(INSERT, coInfo[i])
+            RenderText.insert(INSERT, "\n오존 농도 : ")
+            RenderText.insert(INSERT, o3Info[i])
+            RenderText.insert(INSERT, "\n이산화질소 농도 : ")
+            RenderText.insert(INSERT, no2Info[i])
+            RenderText.insert(INSERT, "\n미세먼지(PM10) 농도 : ")
+            RenderText.insert(INSERT, pm10Info[i])
+            RenderText.insert(INSERT, "\n미세먼지(PM10) 24시간예측이동농도 : ")
+            RenderText.insert(INSERT, pm10Info24[i])
+            RenderText.insert(INSERT, "\n미세먼지(PM2.5) 24시간예측이동농도 : ")
+            RenderText.insert(INSERT, pm25Info24[i])
+            RenderText.insert(INSERT, "\n통합대기환경수치 : ")
+            RenderText.insert(INSERT, khaiInfo[i])
+            RenderText.insert(INSERT, "\n아황산가스 지수 : ")
+            RenderText.insert(INSERT, so2GradeInfo[i])
+            RenderText.insert(INSERT, "\n일산화탄소 지수 : ")
+            RenderText.insert(INSERT, coGradeInfo[i])
+            RenderText.insert(INSERT, "\n오존 지수 : ")
+            RenderText.insert(INSERT, o3GradeInfo[i])
+            RenderText.insert(INSERT, "\n이산화질소 지수 : ")
+            RenderText.insert(INSERT, no2GradeInfo[i])
+            RenderText.insert(INSERT, "\n미세먼지(PM10) 24시간 등급 : ")
+            RenderText.insert(INSERT, pm10GradeInfo[i])
+            RenderText.insert(INSERT, "\n미세먼지(PM10) 1시간 등급 : ")
+            RenderText.insert(INSERT, pm10Grade1hInfo[i])
+            RenderText.insert(INSERT, "\n\n")
+            i += 1
+
+        RenderText.configure(state='disabled')
+
     clickTopText2(c_tk)
     clicksecondText(c_tk)
     InitInputLable(c_tk)
-    clickSearchButton(c_tk)
+    clickSearchButton(c_tk ,SearchButtonAction )
     clickInitRenderText(c_tk)
 
+
 def click_InitSearchButton3():
-    import http.client
-    import urllib.request
-    from xml.dom.minidom import parse, parseString
     global city
+
     key = "LNkyelRj0H1r988h%2FcAj5495bZL4p1wiIv6DU1uI0kCio%2FzjzSm5iPVZs6kxxICTXI6H4%2Bnr3o2lq%2BIF5wxgpw%3D%3D"
     url = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getCtprvnMesureLIst?itemCode=PM10&dataGubun=DAILY&searchCondition=MONTH&pageNo=1&numOfRows=10&ServiceKey=" + key
     c_tk = Tk()
@@ -308,10 +431,10 @@ def click_InitSearchButton3():
         jejuInfo = []
         sejongInfo = []
         seoulInfo = []
-        gyeonggiInfo =[]
+        gyeonggiInfo = []
         busanInfo = []
         daeguInfo = []
-        chungnamInfo =[]
+        chungnamInfo = []
         jeonbukInfo = []
         jeonnamInfo = []
         gyeongbukInfo = []
@@ -363,9 +486,10 @@ def click_InitSearchButton3():
             jejuInfo.append(temp18)
             sejongInfo.append(temp19)
             index += 1
-    def InitRenderText():
-        global RenderText
 
+    def InitRenderText3():
+        global RenderText
+        global a1
         RenderTextScrollbar = Scrollbar(c_tk)
         RenderTextScrollbar.pack()
         RenderTextScrollbar.place(x=375, y=200)
@@ -381,55 +505,53 @@ def click_InitSearchButton3():
         RenderText.insert(INSERT, "\t하루 평균 미세먼지 수치\t\t\n")
 
         for i in range(city):
-                RenderText.insert(INSERT, "\t Y/M/D :  ")
-                RenderText.insert(INSERT, data[i])
-                RenderText.insert(INSERT, "\n[서울] : ")
-                RenderText.insert(INSERT, seoulInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[경기] : ")
-                RenderText.insert(INSERT, gyeonggiInfo[i])
-                RenderText.insert(INSERT, "\n[부산] : ")
-                RenderText.insert(INSERT, busanInfo [i])
-                RenderText.insert(INSERT, "\t\t\t\t[대구] : ")
-                RenderText.insert(INSERT, daeguInfo [i])
-                RenderText.insert(INSERT, "\n[인천] : ")
-                RenderText.insert(INSERT, incheonInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[광주] : ")
-                RenderText.insert(INSERT, gwangjuInfo[i])
-                RenderText.insert(INSERT, "\n[대전] : ")
-                RenderText.insert(INSERT, daejeonInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[울산] : ")
-                RenderText.insert(INSERT, ulsanInfo [i])
-                RenderText.insert(INSERT, "\n[강원] : ")
-                RenderText.insert(INSERT, gangwonInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[충북] : ")
-                RenderText.insert(INSERT, chungbukInfo[i])
-                RenderText.insert(INSERT, "\n[충남] : ")
-                RenderText.insert(INSERT, chungnamInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[전북] : ")
-                RenderText.insert(INSERT, jeonbukInfo[i])
-                RenderText.insert(INSERT, "\n[전남] : ")
-                RenderText.insert(INSERT, jeonnamInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[경북] : ")
-                RenderText.insert(INSERT, gyeongbukInfo[i])
-                RenderText.insert(INSERT, "\n[경남] : ")
-                RenderText.insert(INSERT, gyeongnamInfo[i])
-                RenderText.insert(INSERT, "\t\t\t\t[제주] : ")
-                RenderText.insert(INSERT, jejuInfo[i])
-                RenderText.insert(INSERT, "\n[세종] : ")
-                RenderText.insert(INSERT, sejongInfo[i])
-
-                RenderText.insert(INSERT, "\n\n\n")
-                i += 1
+            RenderText.insert(INSERT, "\t Y/M/D :  ")
+            RenderText.insert(INSERT, data[i])
+            RenderText.insert(INSERT, "\n[서울] : ")
+            RenderText.insert(INSERT, seoulInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[경기] : ")
+            RenderText.insert(INSERT, gyeonggiInfo[i])
+            RenderText.insert(INSERT, "\n[부산] : ")
+            RenderText.insert(INSERT, busanInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[대구] : ")
+            RenderText.insert(INSERT, daeguInfo[i])
+            RenderText.insert(INSERT, "\n[인천] : ")
+            RenderText.insert(INSERT, incheonInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[광주] : ")
+            RenderText.insert(INSERT, gwangjuInfo[i])
+            RenderText.insert(INSERT, "\n[대전] : ")
+            RenderText.insert(INSERT, daejeonInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[울산] : ")
+            RenderText.insert(INSERT, ulsanInfo[i])
+            RenderText.insert(INSERT, "\n[강원] : ")
+            RenderText.insert(INSERT, gangwonInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[충북] : ")
+            RenderText.insert(INSERT, chungbukInfo[i])
+            RenderText.insert(INSERT, "\n[충남] : ")
+            RenderText.insert(INSERT, chungnamInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[전북] : ")
+            RenderText.insert(INSERT, jeonbukInfo[i])
+            RenderText.insert(INSERT, "\n[전남] : ")
+            RenderText.insert(INSERT, jeonnamInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[경북] : ")
+            RenderText.insert(INSERT, gyeongbukInfo[i])
+            RenderText.insert(INSERT, "\n[경남] : ")
+            RenderText.insert(INSERT, gyeongnamInfo[i])
+            RenderText.insert(INSERT, "\t\t\t\t[제주] : ")
+            RenderText.insert(INSERT, jejuInfo[i])
+            RenderText.insert(INSERT, "\n[세종] : ")
+            RenderText.insert(INSERT, sejongInfo[i])
+            a1 = RenderText.get('0.0',END)
+            RenderText.insert(INSERT, "\n\n\n")
+            i += 1
         RenderText.configure(state='disabled')
 
-    InitRenderText()
-    # clicksecondText(c_tk)
-    # InitInputLable(c_tk)
-    # clickSearchButton(c_tk)
-    # clickInitRenderText3(c_tk)
+    InitRenderText3()
+    mail_button(c_tk)
+
+
 
 def click_InitSearchButton4():
-    from xml.dom.minidom import parse, parseString
     global num3
 
     c_tk = Tk()
@@ -459,9 +581,9 @@ def click_InitSearchButton4():
             station.append(tmp1)
             index += 1
 
-    def InitRenderText():
+    def InitRenderText4():
         global RenderText
-
+        global b1
         RenderTextScrollbar = Scrollbar(c_tk)
         RenderTextScrollbar.pack()
         RenderTextScrollbar.place(x=375, y=200)
@@ -475,7 +597,6 @@ def click_InitSearchButton4():
         RenderTextScrollbar.pack(side=RIGHT, fill=BOTH)
         RenderText.insert(INSERT, "---------------나쁨이상 지역---------------")
 
-
         for i in range(num3):
             RenderText.insert(INSERT, "\n[")
             RenderText.insert(INSERT, i + 1)
@@ -484,19 +605,53 @@ def click_InitSearchButton4():
             RenderText.insert(INSERT, station[i])
             RenderText.insert(INSERT, "\n")
             RenderText.insert(INSERT, "오염 상태 : 나쁨이상  외출시 주의")
+            b1 = RenderText.get('0.0', END)
             RenderText.insert(INSERT, "\n\n")
             i += 1
+
         RenderText.configure(state='disabled')
 
-    InitRenderText()
-    # clicksecondText(c_tk)
-    # InitInputLable(c_tk)
-    # clickSearchButton(c_tk)
-    # clickInitRenderText4(c_tk)
+    InitRenderText4()
 
 
+def click_mailmain():
+    mail_tk = Tk()
+    mail_tk.title("mail send")
+    mail_tk.geometry('200x150+300+130')
+    TempFont = font.Font(mail_tk, size=10, weight='bold', family='Consolas')
+    MainText = Label(mail_tk, font=TempFont, text="mail send")
+    MainText.pack()
+    MainText.place(x=20, y=5)
+    InfoText = Label(mail_tk, text="ex):*********@kpu.ac.kr")
+    InfoText.pack()
+    InfoText.place(x=20, y=25)
 
-#호출부분
+    global InputMail
+    TempFont = font.Font(mail_tk, size=10, weight='bold', family='Consolas')
+    InputMail = Entry(mail_tk, font=TempFont, width=20, borderwidth=12, relief='ridge')
+    InputMail.pack()
+    InputMail.place(x=20, y=45)
+    TempFont = font.Font(mail_tk, size=10, weight='bold', family='Consolas')
+    SendButton = Button(mail_tk, font=TempFont, text="보내기", command=mail_send)
+    SendButton.pack()
+    SendButton.place(x=75, y=90)
+
+
+def mail_send():
+    Contents = a1
+    sendTo = InputMail.get()
+    smtp = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp.ehlo()
+    smtp.starttls()
+    smtp.login('yeongminseo8@gmail.com', '135792468a')
+    msg = MIMEText(Contents)
+    msg['Subject'] = "Information"
+    msg['To'] = str(sendTo)
+    smtp.sendmail('yeongminseo8@gmail.com', str(sendTo), msg.as_string())
+    tkinter.messagebox.showwarning("Information", "SEND")
+    smtp.quit()
+
+
+# 호출부분
 m_yebo()
 g_Tk.mainloop()
-
